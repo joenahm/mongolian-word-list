@@ -3,6 +3,7 @@ from utils.scraper import download
 from utils.info import get_info
 from utils.info import set_info
 import os
+import random
 from playsound import playsound
 
 INFO_PATH = 'data/info.csv'
@@ -19,10 +20,7 @@ def memo(info, word):
         playsound('%s\\data\\mp3\\%s' % (CURR_PATH, mp3))
 
 
-info = get_info(INFO_PATH)
-
-while True:
-    keyword = input(': ')
+def search_word(info, keyword):
     if keyword in info:
         memo(info, keyword)
     else:
@@ -40,3 +38,21 @@ while True:
         info = get_info(INFO_PATH)
         # 背诵
         memo(info, keyword)
+
+
+def random_get(info):
+    words = list(info.keys())
+    rand_idx = random.randint(0, len(words)-1)
+    rand_word = words[rand_idx]
+    
+    memo(info, rand_word)
+
+
+info = get_info(INFO_PATH)
+
+while True:
+    inp = input(': ')
+    if (inp == ''):
+        random_get(info)
+    else:
+        search_word(info, inp)
