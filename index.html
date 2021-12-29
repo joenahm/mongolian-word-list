@@ -7,7 +7,7 @@
     <title>背单词</title>
     <style>
         body {
-            background-color: #f5f5f5;
+            background-color: #f1f3f4;
         }
 
         .main-wrapper {
@@ -20,6 +20,7 @@
         }
         .main-font {
             font-size: 40px;
+            font-family: monospace;
         }
         .second-font {
             margin-top: 6px;
@@ -29,10 +30,12 @@
 
         #memoBtn {
             width: 100%;
-            font-size: 18px;
-            background-color: #4cbdff;
             height: 50px;
-            border: 2px #222 solid;
+            line-height: 50px;
+            font-size: 18px;
+            text-align: center;
+            background-color: #4cbdff;
+            border: 1px rgb(58, 157, 238) solid;
             border-radius: 4px;
         }
     </style>
@@ -43,10 +46,7 @@
         <div id="explainWrapper" class="second-font"></div>
     </div>
     <div>
-        <audio id="player" autoplay controls></audio>
-    </div>
-    <div>
-        <button id="memoBtn">⚡</button>
+        <div id="memoBtn">⚡</div>
     </div>
 </body>
 <script>
@@ -69,8 +69,6 @@
     function randMemo(lines) {
         const wordWrapper = document.querySelector('#wordWrapper');
         const explainWrapper = document.querySelector('#explainWrapper');
-        const player = document.querySelector('#player');
-
 
         const randIdx = Math.floor(Math.random() * lines.length);
         const randLine = lines[randIdx];
@@ -83,7 +81,8 @@
 
         wordWrapper.innerHTML = word;
         explainWrapper.innerHTML = explain;
-        player.setAttribute('src', 'data/mp3/'+mp3);
+        const player = new Audio('data/mp3/'+mp3);
+        player.play();
     }
 </script>
 </html>
