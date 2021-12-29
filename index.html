@@ -5,8 +5,85 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>背单词</title>
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .main-wrapper {
+            background-color: #fff;
+            text-align: center;
+            padding: 10px;
+            border: 1px #ccc solid;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .main-font {
+            font-size: 40px;
+        }
+        .second-font {
+            margin-top: 6px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        #memoBtn {
+            width: 100%;
+            font-size: 18px;
+            background-color: #4cbdff;
+            height: 50px;
+            border: 2px #222 solid;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-    <audio autoplay controls src="data/mp3/00d4be56d0b41405b9c8510705f375bf.mp3"></audio>
+    <div class="main-wrapper">
+        <span id="wordWrapper" class="main-font"></span>
+        <div id="explainWrapper" class="second-font"></div>
+    </div>
+    <div>
+        <audio id="player" autoplay controls></audio>
+    </div>
+    <div>
+        <button id="memoBtn">⚡</button>
+    </div>
 </body>
+<script>
+    const memoBtn = document.querySelector('#memoBtn');
+
+    fetch('data/info.csv').then((res) => {
+        const reader = res.body.getReader();
+        reader.read().then((ret) => {
+            const { value } = ret;
+            const infoStr = new TextDecoder('utf-8').decode(value);
+            const lines = infoStr.split('\r\n');
+            
+            randMemo(lines);
+            memoBtn.onclick = function() {
+                randMemo(lines);
+            };
+        })
+    });
+
+    function randMemo(lines) {
+        const wordWrapper = document.querySelector('#wordWrapper');
+        const explainWrapper = document.querySelector('#explainWrapper');
+        const player = document.querySelector('#player');
+
+
+        const randIdx = Math.floor(Math.random() * lines.length);
+        const randLine = lines[randIdx];
+        const items = randLine.split(',');
+
+        const word = items[0];
+        const mp3 = items[1];
+        const explain = items[2];
+
+
+        wordWrapper.innerHTML = word;
+        explainWrapper.innerHTML = explain;
+        player.setAttribute('src', 'data/mp3/'+mp3);
+    }
+</script>
 </html>
